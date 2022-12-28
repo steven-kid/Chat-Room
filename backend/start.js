@@ -16,50 +16,60 @@ userIds = [];
 userNames = [];
 
 // login
+let ret;
 const updateState = () => {
-  let ret;
   connection.query("select * from userinfo", (error, results, fields) => {
     ret = results;
-    ret.forEach(element => {
+    ret.forEach((element) => {
       userIds.push(element.userId);
       userNames.push(element.userName);
     });
   });
-}
+};
 
 // respond with "hello world" when a GET request is made to the homepage
 app.get("/login", (req, res) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Headers", "*");
+  updateState();
   res.send(ret);
 });
 
 // register
 let parms = [];
 
-const cut = (url)=>{
+updateState();
+
+const cut = (url) => {
   parms = url.split("?");
+  let randomId = Math.ceil(Math.random() * 100000);
+  while (userIds.includes(randomId))
+    randomId = Math.ceil(Math.random() * 100000);
   parms[0] = Math.ceil(Math.random() * 100000);
   console.log(parms);
-}
+};
 
 app.post("/register", (req, res) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Headers", "*");
   console.log("收到请求体", req.url);
   cut(req.url);
-  if(userNames.includes(parms[1])){
-    res.send("Duplicate");
-  }else{
-    connection.query("insert into userInfo(userId, userName, password, isAdmin) values(?, ?, ?, 0)", parms);
+  updateState();
+  if (userNames.includes(parms[1])) {
+    console.log("duplicate here");
+    res.send({status: "duplicate"});
+  } else {
+    console.log("try insert");
+    connection.query(
+      "insert into userInfo(userId, userName, password, isAdmin) values(?, ?, ?, 0)",
+      parms
+    );
+    res.send({status: "ok"});
   }
+  updateState();
   res.status(201).send();
 });
 
-app.listen(8000, ()=>{
+app.listen(8000, () => {
   console.log("port start at 8000");
-})
-
-
-
-
+});

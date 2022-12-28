@@ -13,8 +13,6 @@ let connection = mysql.createConnection({
 
 connection.connect();
 
-
-
 app.listen(8000, () => {
   console.log("express start at port 8000");
 });

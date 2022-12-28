@@ -1,12 +1,11 @@
 ### Chatroom 🤺
 
 #### Technology stack
-front-end 
-- vanilla 
+front-end  
 - html 
 - css (font-awesome icon library)
 - javascript
-- ajax (fetching json data from the backend)
+- fetch api (fetching json data from the backend)
 
 #### back-end
 - node.js
