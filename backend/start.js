@@ -32,11 +32,10 @@ app.get("/login", (req, res) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Headers", "*");
   updateState();
-  res.send(ret);
+  res.send(JSON.stringify(ret));
 });
 
 // register
-
 updateState();
 
 const cut = (url) => {
@@ -65,7 +64,7 @@ app.post("/register", (req, res) => {
       "insert into userInfo(userId, userName, password, isAdmin) values(?, ?, ?, 0)",
       parms
     );
-    res.send({status: "ok"});
+    res.send(JSON.stringify({status: "ok"}));
   }
   updateState();
   res.status(201).send();
@@ -85,7 +84,7 @@ app.post("/friends", (req, res) => {
       friends = results;
     }
   );
-  res.status(201).send(friends);
+  res.status(201).send(JSON.stringify(friends));
 });
 
 // get messages
@@ -102,8 +101,39 @@ app.post("/message", (req, res) => {
       message = results;
     }
   );
-  res.status(201).send(JSON.stringify(message));
+  res.send(JSON.stringify(message));
+  res.status(201).send();
 });
+
+// make message
+app.post("/msg", (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Headers", "*");
+  console.log("收到请求体", req.url);
+  let parms = cut(req.url);
+  connection.query(
+    "INSERT INTO messageinfo VALUES(?, ?, ?, ?, now());",
+    parms, (error, results, fields) => {
+      console.log(results);
+    }
+  );
+  res.status(201).send(JSON.stringify({status: "ok"}));
+})
+
+// friend
+app.post("/friend", (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Headers", "*");
+  console.log("收到请求体", req.url);
+  let parms = cut(req.url);
+  connection.query(
+    "INSERT INTO messageinfo VALUES(?, ?, ?, ?, now());",
+    parms, (error, results, fields) => {
+      console.log(results);
+    }
+  );
+  res.status(201).send(JSON.stringify({status: "ok"}));
+})
 
 app.listen(8000, () => {
   console.log("port start at 8000");

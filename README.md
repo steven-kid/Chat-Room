@@ -12,6 +12,17 @@ front-end
 - express.js(api)
 - mysql library(connecting to local mysql server)
 
+#### features
+add friend name label ✅
+add friends 
+edit profile
+group chat part
+button click effect
+send message logic ✅
+
+### to be done
+fresh page(data can not refresh)
+
 #### Bugs
 In two different js file, after import into index.html
 a strange bug occur (problem while the card's transition)
